@@ -18,7 +18,7 @@ function App() {
   const [leadFormOpen, setLeadFormOpen] = useState(false);
   const [registerPromptOpen, setRegisterPromptOpen] = useState(false);
 
-  const { session, registerUser, continueAsGuest } = useUserSession();
+  const { session, registerUser, continueAsGuest, logout } = useUserSession();
 
   const handleReturnFromBank = useCallback(() => {
     if (session?.status === 'guest') {
@@ -45,6 +45,7 @@ function App() {
         onToggleCreditStatus={setHasActiveCredit}
         session={session}
         onRegisterClick={() => setRegisterPromptOpen(true)}
+        onLogout={logout}
       />
       <Box sx={{ display: 'flex', gap: 3, p: { xs: 2, md: 4 }, alignItems: 'flex-start' }}>
         <Box

@@ -45,5 +45,10 @@ export function useUserSession() {
     setSession(next);
   }, []);
 
-  return { session, registerUser, continueAsGuest };
+  const logout = useCallback(() => {
+    setSession(null);
+    writeStoredSession(null);
+  }, []);
+
+  return { session, registerUser, continueAsGuest, logout };
 }

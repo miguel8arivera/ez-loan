@@ -4,7 +4,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { toast } from 'sonner';
-import { documentTypeLabels, documentTypes, registrationSchema } from '../types/registration';
+import {
+  documentTypeLabels,
+  documentTypes,
+  registrationSchema,
+} from '../types/registration';
 import type { RegisteredUser } from '../types/user';
 
 interface FormState {
@@ -33,10 +37,13 @@ export default function RegistrationForm({
   submitLabel = 'Crear cuenta',
 }: RegistrationFormProps) {
   const [form, setForm] = useState<FormState>(initialState);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof FormState, string>>
+  >({});
 
   const handleChange =
-    (field: keyof FormState) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (field: keyof FormState) =>
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { value } = event.target;
       setForm((prev) => ({ ...prev, [field]: value }));
       setErrors((prev) => ({ ...prev, [field]: undefined }));
