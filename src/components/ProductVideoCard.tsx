@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { TbBrandYoutube } from 'react-icons/tb';
-import type { BcpProduct } from '../types/bcpProduct';
+import type { BankProduct } from '../types/bankProduct';
 import YouTubeEmbed from './YouTubeEmbed';
 
-export default function ProductVideoCard({ product }: { product: BcpProduct }) {
+export default function ProductVideoCard({ product }: { product: BankProduct }) {
   return (
     <Box
       sx={{

@@ -1,14 +1,16 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { TbBulb } from 'react-icons/tb';
-import { bcpProducts } from '../data/bcpProducts';
-import BcpProductCard from './BcpProductCard';
+import { bankProducts } from '../data/bankProducts';
+import { findBankBySlug, type BankId } from '../data/banks';
+import BankProductCard from './BankProductCard';
 import ProductStepsCard from './ProductStepsCard';
 import ProductVideoCard from './ProductVideoCard';
-import type { BcpProduct } from '../types/bcpProduct';
+import type { BankProduct } from '../types/bankProduct';
 
-interface BcpProductsPanelProps {
-  onProductSelect?: (product: BcpProduct) => void;
+interface BankProductsPanelProps {
+  bankId: BankId;
+  onProductSelect?: (product: BankProduct) => void;
 }
 
 const gridTemplateColumns = {
@@ -18,7 +20,10 @@ const gridTemplateColumns = {
 
 const columnLabels = ['PRODUCTO', 'CÓMO OBTENERLO', 'VIDEO'];
 
-export default function BcpProductsPanel({ onProductSelect }: BcpProductsPanelProps) {
+export default function BankProductsPanel({ bankId, onProductSelect }: BankProductsPanelProps) {
+  const bank = findBankBySlug(bankId);
+  const products = bankProducts[bankId];
+
   return (
     <Box
       sx={{
@@ -46,12 +51,12 @@ export default function BcpProductsPanel({ onProductSelect }: BcpProductsPanelPr
           <TbBulb size={24} />
         </Box>
         <Typography variant="h5" sx={{ fontWeight: 700 }}>
-          Aún no tienes un crédito activo
+          Aún no tienes un crédito activo con {bank?.name}
         </Typography>
       </Box>
       <Typography variant="body1" sx={{ color: 'text.secondary', mt: 1, mb: 3 }}>
-        Empieza tu camino con BCP: elige un producto y sigue los pasos para acceder a él, sin
-        necesidad de experiencia previa con bancos.
+        Empieza tu camino con {bank?.name}: elige un producto y sigue los pasos para acceder a
+        él, sin necesidad de experiencia previa con bancos.
       </Typography>
 
       <Box sx={{ display: 'grid', gridTemplateColumns, columnGap: 3, rowGap: { xs: 1.5, lg: 3 } }}>
@@ -72,10 +77,10 @@ export default function BcpProductsPanel({ onProductSelect }: BcpProductsPanelPr
           </Typography>
         ))}
 
-        {bcpProducts.map((product, index) => (
+        {products.map((product, index) => (
           <Box key={product.id} sx={{ display: 'contents' }}>
             <Box sx={{ gridColumn: { xs: 'auto', lg: '1' }, gridRow: { xs: 'auto', lg: index + 2 } }}>
-              <BcpProductCard product={product} onSelect={onProductSelect} />
+              <BankProductCard product={product} onSelect={onProductSelect} />
             </Box>
             <Box sx={{ gridColumn: { xs: 'auto', lg: '2' }, gridRow: { xs: 'auto', lg: index + 2 } }}>
               <ProductStepsCard product={product} />
@@ -88,8 +93,9 @@ export default function BcpProductsPanel({ onProductSelect }: BcpProductsPanelPr
       </Box>
 
       <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', mt: 3 }}>
-        Información referencial basada en condiciones públicas de BCP; montos, tasas y plazos
-        pueden variar. Verifica siempre los detalles vigentes en viabcp.com antes de decidir.
+        Información referencial basada en condiciones públicas de {bank?.name}; montos, tasas y
+        plazos pueden variar. Verifica siempre los detalles vigentes en su web oficial antes de
+        decidir.
       </Typography>
     </Box>
   );

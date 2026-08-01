@@ -1,5 +1,7 @@
-export interface BcpProduct {
-  id: string;
+export type BankProductCategory = 'credit-history' | 'plans-terms' | 'fixed-term-deposit';
+
+export interface BankProduct {
+  id: BankProductCategory;
   title: string;
   features: string[];
   steps: string[];

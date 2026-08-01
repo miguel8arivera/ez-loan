@@ -1,14 +1,12 @@
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import { banks } from '../data/loans';
+import { Link, useParams } from 'react-router-dom';
+import { banksList } from '../data/banks';
 
-interface BankFilterSidebarProps {
-  selectedBank: string | null;
-  onSelectBank: (bank: string) => void;
-}
+export default function BankFilterSidebar() {
+  const { bankSlug } = useParams<{ bankSlug?: string }>();
 
-export default function BankFilterSidebar({ selectedBank, onSelectBank }: BankFilterSidebarProps) {
   return (
     <Box
       sx={{
@@ -26,12 +24,13 @@ export default function BankFilterSidebar({ selectedBank, onSelectBank }: BankFi
         FILTER BY BANK
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1.5 }}>
-        {banks.map((bank) => {
-          const isSelected = bank === selectedBank;
+        {banksList.map((bank) => {
+          const isSelected = bank.id === bankSlug;
           return (
             <ButtonBase
-              key={bank}
-              onClick={() => onSelectBank(bank)}
+              key={bank.id}
+              component={Link}
+              to={isSelected ? '/' : `/bancos/${bank.id}`}
               sx={{
                 justifyContent: 'flex-start',
                 px: 2,
@@ -48,7 +47,7 @@ export default function BankFilterSidebar({ selectedBank, onSelectBank }: BankFi
                 },
               }}
             >
-              {bank}
+              {bank.name}
             </ButtonBase>
           );
         })}

@@ -3,15 +3,15 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { TbCircleCheckFilled } from 'react-icons/tb';
-import type { BcpProduct } from '../types/bcpProduct';
-import { productIcons } from './bcpProductIcons';
+import type { BankProduct } from '../types/bankProduct';
+import { productIcons } from './productIcons';
 
-interface BcpProductCardProps {
-  product: BcpProduct;
-  onSelect?: (product: BcpProduct) => void;
+interface BankProductCardProps {
+  product: BankProduct;
+  onSelect?: (product: BankProduct) => void;
 }
 
-export default function BcpProductCard({ product, onSelect }: BcpProductCardProps) {
+export default function BankProductCard({ product, onSelect }: BankProductCardProps) {
   const handleClick = () => onSelect?.(product);
   const Icon = productIcons[product.id];
 
