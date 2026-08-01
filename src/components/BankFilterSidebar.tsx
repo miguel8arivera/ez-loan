@@ -1,11 +1,12 @@
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useMatch } from 'react-router-dom';
 import { banksList } from '../data/banks';
 
 export default function BankFilterSidebar() {
-  const { bankSlug } = useParams<{ bankSlug?: string }>();
+  const match = useMatch('/bancos/:bankSlug');
+  const bankSlug = match?.params.bankSlug;
 
   return (
     <Box
@@ -32,22 +33,37 @@ export default function BankFilterSidebar() {
               component={Link}
               to={isSelected ? '/' : `/bancos/${bank.id}`}
               sx={{
-                justifyContent: 'flex-start',
+                justifyContent: 'space-between',
                 px: 2,
                 py: 1.25,
                 borderRadius: 1.5,
-                bgcolor: isSelected ? 'surface.elevated' : 'transparent',
-                borderLeft: '3px solid',
-                borderLeftColor: isSelected ? 'error.main' : 'transparent',
-                color: isSelected ? 'text.primary' : 'text.secondary',
+                bgcolor: isSelected ? 'rgba(34, 211, 238, 0.14)' : 'transparent',
+                border: '1px solid',
+                borderColor: isSelected ? 'rgba(34, 211, 238, 0.4)' : 'transparent',
+                borderLeft: '4px solid',
+                borderLeftColor: isSelected ? 'primary.main' : 'transparent',
+                color: isSelected ? 'primary.main' : 'text.secondary',
                 fontWeight: isSelected ? 700 : 500,
-                transition: 'background-color 0.15s ease',
+                boxShadow: isSelected ? '0 0 12px rgba(34, 211, 238, 0.25)' : 'none',
+                transition: 'background-color 0.15s ease, box-shadow 0.15s ease',
                 '&:hover': {
-                  bgcolor: 'surface.elevated',
+                  bgcolor: isSelected ? 'rgba(34, 211, 238, 0.18)' : 'surface.elevated',
                 },
               }}
             >
               {bank.name}
+              {isSelected && (
+                <Box
+                  component="span"
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    bgcolor: 'primary.main',
+                    flexShrink: 0,
+                  }}
+                />
+              )}
             </ButtonBase>
           );
         })}
