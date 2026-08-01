@@ -1,6 +1,7 @@
 import type { Loan } from '../types/loan';
+import { banksList } from './banks';
 
-export const banks = ['BCP', 'Interbank', 'Scotiabank', 'BBVA'] as const;
+export const banks = banksList.map((bank) => bank.name);
 
 export const loans: Loan[] = [
   {

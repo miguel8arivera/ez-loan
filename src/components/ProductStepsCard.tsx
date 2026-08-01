@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { BcpProduct } from '../types/bcpProduct';
+import type { BankProduct } from '../types/bankProduct';
 
-export default function ProductStepsCard({ product }: { product: BcpProduct }) {
+export default function ProductStepsCard({ product }: { product: BankProduct }) {
   return (
     <Box
       sx={{

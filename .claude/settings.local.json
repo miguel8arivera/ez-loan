@@ -4,7 +4,8 @@
       "Bash(rm -f src/App.css src/assets/hero.png src/assets/react.svg src/assets/vite.svg)",
       "Bash(rmdir src/assets)",
       "Bash(npx tsc *)",
-      "Bash(node -e \"console.log\\(require\\('./node_modules/@mui/material/package.json'\\).version\\)\")"
+      "Bash(node -e \"console.log\\(require\\('./node_modules/@mui/material/package.json'\\).version\\)\")",
+      "WebSearch"
     ]
   }
 }
