@@ -13,6 +13,8 @@ import PercentIcon from '@mui/icons-material/Percent';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import type { Loan } from '../types/loan';
 import LoanBadge from './LoanBadge';
+import BankMonogram from './BankMonogram';
+import { findBankByName } from '../data/banks';
 import { formatCurrency, formatPercent, formatTerm } from '../utils/format';
 
 interface LoanTableProps {
@@ -76,7 +78,9 @@ export default function LoanTable({ loans }: LoanTableProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {loans.map((loan) => (
+          {loans.map((loan) => {
+            const bank = findBankByName(loan.bank);
+            return (
             <TableRow
               key={loan.id}
               sx={{
@@ -85,7 +89,8 @@ export default function LoanTable({ loans }: LoanTableProps) {
               }}
             >
               <TableCell sx={{ borderColor: 'surface.border' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+                  {bank && <BankMonogram bank={bank} size={24} />}
                   <Typography sx={{ fontWeight: 700 }}>{loan.bank}</Typography>
                   {loan.badge && <LoanBadge badge={loan.badge} />}
                 </Box>
@@ -115,7 +120,8 @@ export default function LoanTable({ loans }: LoanTableProps) {
                 {formatCurrency(loan.totalCost)}
               </TableCell>
             </TableRow>
-          ))}
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

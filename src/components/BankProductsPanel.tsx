@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { TbBulb } from 'react-icons/tb';
 import { bankProducts } from '../data/bankProducts';
 import { findBankBySlug, type BankId } from '../data/banks';
 import BankProductCard from './BankProductCard';
+import BankMonogram from './BankMonogram';
 import ProductStepsCard from './ProductStepsCard';
 import ProductVideoCard from './ProductVideoCard';
 import type { BankProduct } from '../types/bankProduct';
@@ -35,21 +35,7 @@ export default function BankProductsPanel({ bankId, onProductSelect }: BankProdu
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <Box
-          sx={{
-            width: 44,
-            height: 44,
-            borderRadius: 1.5,
-            bgcolor: 'rgba(34, 211, 238, 0.14)',
-            color: 'primary.main',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}
-        >
-          <TbBulb size={24} />
-        </Box>
+        {bank && <BankMonogram bank={bank} size={44} />}
         <Typography variant="h5" sx={{ fontWeight: 700 }}>
           Aún no tienes un crédito activo con {bank?.name}
         </Typography>
