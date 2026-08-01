@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { banksList } from '../data/banks';
+import BankMonogram from './BankMonogram';
 
 export default function ChooseBankPrompt() {
   return (
@@ -29,8 +30,11 @@ export default function ChooseBankPrompt() {
             component={Link}
             to={`/bancos/${bank.id}`}
             sx={{
-              px: 3,
-              py: 1.25,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              px: 2.5,
+              py: 1.1,
               borderRadius: 999,
               border: '1px solid',
               borderColor: 'primary.dark',
@@ -40,6 +44,7 @@ export default function ChooseBankPrompt() {
               '&:hover': { bgcolor: 'surface.elevated' },
             }}
           >
+            <BankMonogram bank={bank} size={24} />
             {bank.name}
           </Box>
         ))}

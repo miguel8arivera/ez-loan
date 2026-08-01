@@ -3,6 +3,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { Link, useMatch } from 'react-router-dom';
 import { banksList } from '../data/banks';
+import BankMonogram from './BankMonogram';
 
 export default function BankFilterSidebar() {
   const match = useMatch('/bancos/:bankSlug');
@@ -51,7 +52,10 @@ export default function BankFilterSidebar() {
                 },
               }}
             >
-              {bank.name}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+                <BankMonogram bank={bank} />
+                <Box component="span">{bank.name}</Box>
+              </Box>
               {isSelected && (
                 <Box
                   component="span"
