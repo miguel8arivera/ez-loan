@@ -31,9 +31,15 @@ export const registrationSchema = z
       .toLowerCase()
       .email('Ingresa un correo electrónico válido')
       .max(254, 'El correo es demasiado largo'),
+    password: z
+      .string()
+      .min(8, 'La contraseña debe tener al menos 8 caracteres')
+      .regex(/[A-Za-z]/, 'La contraseña debe incluir al menos una letra')
+      .regex(/\d/, 'La contraseña debe incluir al menos un número'),
+    confirmPassword: z.string().min(1, 'Confirma tu contraseña'),
   })
   .check((ctx) => {
-    const { documentType, documentNumber } = ctx.value;
+    const { documentType, documentNumber, password, confirmPassword } = ctx.value;
     if (documentType === 'dni' && !/^\d{8}$/.test(documentNumber)) {
       ctx.issues.push({
         code: 'custom',
@@ -48,6 +54,14 @@ export const registrationSchema = z
         message: 'El Carné de Extranjería debe tener entre 6 y 12 caracteres alfanuméricos',
         path: ['documentNumber'],
         input: documentNumber,
+      });
+    }
+    if (confirmPassword !== password) {
+      ctx.issues.push({
+        code: 'custom',
+        message: 'Las contraseñas no coinciden',
+        path: ['confirmPassword'],
+        input: confirmPassword,
       });
     }
   });
