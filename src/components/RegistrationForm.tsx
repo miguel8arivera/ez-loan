@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { toast } from 'sonner';
+import { registerAccount } from '../api/account';
 import {
   documentTypeLabels,
   documentTypes,
@@ -17,6 +18,8 @@ interface FormState {
   documentType: '' | (typeof documentTypes)[number];
   documentNumber: string;
   email: string;
+  password: string;
+  confirmPassword: string;
 }
 
 const initialState: FormState = {
@@ -25,6 +28,8 @@ const initialState: FormState = {
   documentType: '',
   documentNumber: '',
   email: '',
+  password: '',
+  confirmPassword: '',
 };
 
 interface RegistrationFormProps {
@@ -40,6 +45,7 @@ export default function RegistrationForm({
   const [errors, setErrors] = useState<
     Partial<Record<keyof FormState, string>>
   >({});
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange =
     (field: keyof FormState) =>
@@ -49,7 +55,7 @@ export default function RegistrationForm({
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = registrationSchema.safeParse(form);
 
     if (!result.success) {
@@ -65,7 +71,30 @@ export default function RegistrationForm({
       return;
     }
 
-    onRegister(result.data);
+    setSubmitting(true);
+    const apiResult = await registerAccount(result.data);
+    setSubmitting(false);
+
+    if (apiResult.ok) {
+      onRegister(apiResult.user);
+      return;
+    }
+
+    if (apiResult.kind === 'validation') {
+      setErrors(apiResult.fieldErrors);
+      toast.error('Revisa los datos ingresados', {
+        description: 'El servidor encontró datos inválidos.',
+      });
+      return;
+    }
+
+    if (apiResult.kind === 'conflict') {
+      setErrors({ email: apiResult.message, documentNumber: apiResult.message });
+      toast.error('No pudimos crear tu cuenta', { description: apiResult.message });
+      return;
+    }
+
+    toast.error('No pudimos crear tu cuenta', { description: apiResult.message });
   };
 
   return (
@@ -126,9 +155,31 @@ export default function RegistrationForm({
         fullWidth
       />
 
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <TextField
+          label="Contraseña"
+          type="password"
+          value={form.password}
+          onChange={handleChange('password')}
+          error={!!errors.password}
+          helperText={errors.password}
+          fullWidth
+        />
+        <TextField
+          label="Confirmar contraseña"
+          type="password"
+          value={form.confirmPassword}
+          onChange={handleChange('confirmPassword')}
+          error={!!errors.confirmPassword}
+          helperText={errors.confirmPassword}
+          fullWidth
+        />
+      </Stack>
+
       <Button
         variant="contained"
         onClick={handleSubmit}
+        disabled={submitting}
         sx={{
           bgcolor: 'primary.main',
           color: 'primary.contrastText',
@@ -139,7 +190,7 @@ export default function RegistrationForm({
           '&:hover': { bgcolor: 'primary.dark' },
         }}
       >
-        {submitLabel}
+        {submitting ? 'Creando cuenta...' : submitLabel}
       </Button>
     </Stack>
   );
